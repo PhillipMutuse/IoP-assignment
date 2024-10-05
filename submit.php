@@ -12,6 +12,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   // Password hashing for security
   $passwordHash = password_hash($password, PASSWORD_BCRYPT);
 
+  //2FA
+  $verificationCode = rand(100000, 999999); 
+  mail($email, "Your 2FA Code", "Use this code to complete registration: $verificationCode");
+
+
   // Continue with storing data to the database
   require 'Database.php';
 
