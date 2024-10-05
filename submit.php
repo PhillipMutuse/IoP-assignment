@@ -13,5 +13,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $passwordHash = password_hash($password, PASSWORD_BCRYPT);
 
   // Continue with storing data to the database
+  require 'Database.php';
+
+$database = new Database();
+$db = $database->getConnection();
+
+// SQL query to insert user data
+$query = "INSERT INTO users (username, email, password) VALUES (:username, :email, :password)";
+
+// Prepare and bind
+$stmt = $db->prepare($query);
+$stmt->bindParam(":username", $username);
+$stmt->bindParam(":email", $email);
+$stmt->bindParam(":password", $passwordHash);
+
+// Execute the query
+if($stmt->execute()) {
+  echo "User registered successfully.";
+} else {
+  echo "Error occurred.";
+}
+
 }
 ?>
